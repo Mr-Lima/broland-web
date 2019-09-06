@@ -1,9 +1,72 @@
-import React from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { Grid, CardHeader, CardContent } from '@material-ui/core';
 import { BrolandName } from 'assets/images';
+import { getStatus } from 'requests';
 import { Container, Main, MineBtn, Header, Footer, Status } from './styles';
 
+const INITIAL_STATE = {
+  status: {
+    loading: false,
+    data: {
+      status: 'Unknown',
+    },
+    error: null,
+  },
+};
+
+function reducer(state, action) {
+  console.log('prevState: ', state);
+  console.log('action: ', action);
+
+  switch (action.type) {
+    case '@status/request':
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: true,
+        },
+      };
+    case '@status/success':
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: false,
+          data: action.payload.response,
+        },
+      };
+    case '@status/failure':
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: false,
+          error: action.payload.error,
+        },
+      };
+    default:
+      return { ...state };
+  }
+}
+
 export default function Mine() {
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+
+  useEffect(() => {
+    let didUnmount = false;
+
+    const fetchData = () => {
+      getStatus(dispatch);
+    };
+    if (!didUnmount) fetchData();
+    return () => {
+      didUnmount = true;
+    };
+  }, []);
+
+  console.log('state: ', state);
+  console.log('----------------------------------');
   return (
     <Container container justify="center" alignItems="center">
       <Header item md={12} container justify="center" alignItems="center">
@@ -24,7 +87,12 @@ export default function Mine() {
           </MineBtn>
         </Grid>
         <Grid item md={12} container justify="center">
-          <MineBtn variant="contained">Start Server</MineBtn>
+          <MineBtn
+            variant="contained"
+            disabled={state.status.data.status === 'Unknown'}
+          >
+            Start Server
+          </MineBtn>
         </Grid>
       </Main>
       <Footer item md={12} container justify="center">
@@ -32,6 +100,8 @@ export default function Mine() {
           <CardHeader title="Server status" />
           <CardContent>
             <p>
+              {state.status.loading ? 'Loading' : state.status.data.status}
+              <br />
               ip: <br />
               port: <br />
             </p>
