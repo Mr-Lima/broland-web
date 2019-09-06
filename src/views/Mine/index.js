@@ -15,9 +15,6 @@ const INITIAL_STATE = {
 };
 
 function reducer(state, action) {
-  console.log('prevState: ', state);
-  console.log('action: ', action);
-
   switch (action.type) {
     case '@status/request':
       return {
@@ -65,8 +62,6 @@ export default function Mine() {
     };
   }, []);
 
-  console.log('state: ', state);
-  console.log('----------------------------------');
   return (
     <Container container justify="center" alignItems="center">
       <Header item md={12} container justify="center" alignItems="center">
