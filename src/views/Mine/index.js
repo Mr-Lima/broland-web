@@ -225,6 +225,7 @@ export default function Mine() {
               <br />
               ip: {state.status.loading ? 'Loading' : state.status.data.ip}
               <br />
+              forge: 14.23.5.2838
             </p>
           </CardContent>
         </Status>
