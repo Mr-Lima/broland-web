@@ -222,7 +222,6 @@ export default function Mine() {
               status:{' '}
               {state.status.loading ? 'Loading' : state.status.data.status}
               <br />
-              <br />
               ip: {state.status.loading ? 'Loading' : state.status.data.ip}
               <br />
               forge: 14.23.5.2838
