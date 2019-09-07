@@ -30,7 +30,7 @@ function reducer(state, action) {
         status: {
           ...state.status,
           loading: false,
-          data: action.payload.response,
+          data: action.payload.response.data,
         },
       };
     case '@status/failure':
@@ -84,9 +84,12 @@ export default function Mine() {
         <Grid item md={12} container justify="center">
           <MineBtn
             variant="contained"
-            disabled={state.status.data.status === 'Unknown'}
+            disabled={
+              state.status.data.status !== 'running' ||
+              state.status.data.status !== 'stopped'
+            }
           >
-            Start Server
+            {state.status.data.status === 'running' ? 'Start' : 'Stop'} Server
           </MineBtn>
         </Grid>
       </Main>
@@ -95,10 +98,12 @@ export default function Mine() {
           <CardHeader title="Server status" />
           <CardContent>
             <p>
+              status:{' '}
               {state.status.loading ? 'Loading' : state.status.data.status}
               <br />
-              ip: <br />
-              port: <br />
+              <br />
+              ip: {state.status.loading ? 'Loading' : state.status.data.ip}
+              <br />
             </p>
           </CardContent>
         </Status>
