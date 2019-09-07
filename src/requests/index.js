@@ -9,19 +9,45 @@ export async function getStatus(dispatch = null) {
     if (dispatch) {
       dispatch({
         type: '@status/success',
-        payload: { response: res },
+        payload: res.data,
       });
-      return res;
+      return res.data;
     }
-    return res;
+    return res.data;
   } catch (e) {
     if (dispatch) {
       dispatch({
         type: '@status/failure',
         payload: { error: e },
       });
-      return e;
+      throw e;
     }
-    return e;
+    throw e;
+  }
+}
+
+export async function toggleServer(user, password, dispatch = null) {
+  try {
+    if (dispatch) dispatch({ type: '@toggle/request' });
+
+    const res = await api.post('/server/toggle', { user, password });
+
+    if (dispatch) {
+      dispatch({
+        type: '@toggle/success',
+        payload: res.data,
+      });
+      return res.data;
+    }
+    return res.data;
+  } catch (e) {
+    if (dispatch) {
+      dispatch({
+        type: '@toggle/failure',
+        payload: { error: e },
+      });
+      throw e;
+    }
+    throw e;
   }
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router } from 'react-router-dom';
 
 import Home from 'views/Home';
 
@@ -23,7 +23,7 @@ export default function Routes() {
   }, []);
 
   return (
-    <BrowserRouter history={history}>
+    <Router history={history}>
       <Switch>
         {routes.map(route =>
           route.protected ? (
@@ -43,6 +43,6 @@ export default function Routes() {
         <Route path="/unauthenticated" render={() => <div>Forbidden</div>} />
         <Route path="/" component={Home} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
