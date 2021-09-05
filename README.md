@@ -1,3 +1,5 @@
+### Just a project to help my friends mount and admin their minecraft server in AWS
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
